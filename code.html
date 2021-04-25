@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Shawna Russell</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/img/favicon.png" rel="icon">
+    <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Vendor CSS Files -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/css/ionicons.min.css" rel="stylesheet">
+    <link href="/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="/css/venobox.min.css" rel="stylesheet">
+    <link href="/css/devicon.min.css" rel="stylesheet">
+    <link href="//cdn.jsdelivr.net/gh/devicons/devicon@v2.11.0/devicon.min.css" rel="stylesheet">
+
+
+    <!-- Template Main CSS File -->
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+    <link href="/css/prism.css" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: DevFolio - v2.4.1
+  * Template URL: //bootstrapmade.com/devfolio-bootstrap-portfolio-html-template/
+  * Author: BootstrapMade.com
+  * License: //bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body id="page-top">
+
+    <!-- ======= Header/ Navbar ======= -->
+    <nav class="navbar navbar-b navbar-trans navbar-expand-md fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll" href="#page-top">Shawna Russell</a>
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarDefault"
+                aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="navbar-collapse collapse justify-content-end" id="navbarDefault">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll" href="https://srussell-tasklist.netlify.app/">The App</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="code.html">See the Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll" href="https://github.com/shawnatwrussell/TaskList"
+                            target="_blank">Get the Code</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll" href="contact.html">Contact the Developer</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ======= Intro Section ======= -->
+    <div id="home" class="intro route bg-image" style="background-image: url(/img/intro-bg.jpg)">
+        <div class="overlay-itro"></div>
+        <div class="intro-content display-table">
+            <div class="table-cell">
+                <div class="container">
+                    <h1 class="intro-title mb-4">Task List App</h1>
+                    <!--SCROLL DOWN-->
+                    <p class="intro-subtitle">Scroll Down</p>
+                    <a href="#" class="scroll-down" size="large"><i class="fa fa-chevron-down"></i></a>
+                </div>
+            </div>
+        </div>
+    </div><!-- End Intro Section -->
+
+    <main id="main">
+
+        <!-- ======= About Section ======= -->
+        <!--TODO: Add Professional Headshot-->
+        <section id="about" class="about-mf sect-pt4 route">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="box-shadow-full">
+                            <h5>
+                                <div class="title">See the Code</div>
+                            </h5>
+                            <div class="row">
+                                <div class="col line-numbers">
+                                    <pre><code class="language-javascript">$(function () {
+    PrepareLocalStorage();
+
+    let allTasks = GetLocalStorage();
+    //Set task count
+    SetTaskCountLabel(`ALL TASKS (${allTasks.length})`);
+
+    //This is my first change where I am trying to pass the entire array into ListTasks...
+    //Not even sure if it works yet...However if it does I am in business!
+    ListTasks(allTasks);
+
+    //Trigger tooltips on hover
+    $('[data-toggle="tooltip"]').tooltip({
+        trigger: 'hover'
+    })
+
+    $("#btnSearch").on("click", function () {
+        let searchString = $("#txtSearch").val();
+        SearchTasks(searchString);
+    })
+});
+
+function FilterAll() {
+    let tasks = GetLocalStorage();
+    SetTaskCountLabel(`ALL TASKS (${tasks.length})`);
+    ListTasks(tasks);
+}
+
+function FilterOverDue() {
+    let tasks = GetLocalStorage();
+    let overdueTasks = tasks.filter(t => Date.parse(t.dueDate) < new Date());
+    SetTaskCountLabel(`OVERDUE TASKS (${overdueTasks.length})`)
+    ListTasks(overdueTasks);
+}
+
+function FilterCompleted() {
+    let tasks = GetLocalStorage();
+    let completedTasks = tasks.filter(t => t.completed == true);
+    SetTaskCountLabel(`COMPLETED TASKS (${completedTasks.length})`)
+    ListTasks(completedTasks)
+}
+
+function FilterInComplete() {
+    let tasks = GetLocalStorage();
+    let incompleteTasks = tasks.filter(t => t.completed == false);
+    SetTaskCountLabel(`INCOMPLETE TASKS (${incompleteTasks.length})`)
+    ListTasks(incompleteTasks)
+}
+
+
+function PrepareLocalStorage() {
+    if (GetLocalStorage() == null)
+        SetLocalStorage(new Array());
+}
+
+function CreateTask(formData) {
+
+    let dueDate = formData[2].value == "" ?
+        new Date() :
+        new Date(`${formData[2].value} 00:00`);
+
+    let task = {
+        id: GenerateId(),
+        created: new Date(),
+        completed: false,
+        title: formData[1].value,
+        dueDate: dueDate
+    }
+
+    let tasks = GetLocalStorage();
+    tasks.push(task);
+
+    SetLocalStorage(tasks);
+    SetTaskCountLabel(`ALL TASKS (${tasks.length})`);
+    ListTasks(tasks);
+}
+
+function EditTask(formData) {
+
+    let taskId = formData[1].value;
+
+    let tasks = GetLocalStorage();
+    let task = tasks.find(t => t.id == taskId);
+    task.title = formData[2].value;
+    task.dueDate = new Date(`${formData[3].value} 00:00`);
+
+    SetLocalStorage(tasks);
+
+    ListTasks();
+}
+
+function SaveTask(task) {
+    let taskData = GetLocalStorage();
+    taskData.tasks.push(task);
+    SetLocalStorage(taskData);
+}
+
+function ListTasks(tasks) {
+    const template = document.getElementById("taskItem-template");
+    const eventBody = document.getElementById("taskBody");
+
+    taskBody.innerHTML = "";
+    for (var row = 0; row < tasks.length; row++) {
+        const taskRow = document.importNode(template.content, true);
+
+        if (tasks[row].completed)
+            taskRow.getElementById("TaskRow").setAttribute("class", "complete");
+
+        taskRow.getElementById("id").textContent = tasks[row].id;
+        taskRow.getElementById("title").textContent = tasks[row].title;
+        taskRow.getElementById("created").textContent = RenderDate(tasks[row].created);
+        taskRow.getElementById("dueDate").textContent = RenderDate(tasks[row].dueDate);
+        taskRow.getElementById("tdCrud").setAttribute("data-id", tasks[row].id)
+
+        taskBody.appendChild(taskRow);
+    }
+}
+
+
+function DeleteTask(element) {
+    ClearTooltip();
+
+    let index = GetIndex(element);
+    let tasks = GetLocalStorage();
+    tasks.splice(index, 1);
+    SetLocalStorage(tasks);
+
+    SetTaskCountLabel(`ALL TASKS (${tasks.length})`)
+    ListTasks(GetLocalStorage());
+}
+
+function CompleteTask(element) {
+    ClearTooltip();
+
+    let taskId = GetTaskId(element);
+    let tasks = GetLocalStorage();
+    let task = tasks.find(t => t.id == taskId);
+    task.completed = true;
+
+    SetLocalStorage(tasks);
+    ListTasks(GetLocalStorage());
+}
+
+//The element in this function is most likely a button
+function GetIndex(element) {
+    //I am passing a piece of structure (i.e a button) and trying to get some data out    
+    let taskId = GetTaskId(element);
+
+    //Get a reference to local storage
+    let tasks = GetLocalStorage();
+
+    //findIndex is a built-in JS function that returns the 0 based position in the array
+    return tasks.findIndex(t => t.id == taskId);
+}
+
+function GenerateId() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = Math.random() * 16 | 0,
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+function GetTaskCount(tasks) {
+    return tasks.length;
+}
+
+function RenderDate(dateString) {
+    let date = new Date(dateString);
+    let options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return date.toLocaleDateString("en-US", options)
+}
+
+function GetTaskId(element) {
+    let taskId = $(element).parent().attr("data-id");
+    return taskId;
+}
+
+function GetTask(element) {
+    let taskId = GetTaskId(element);
+    return tasks.find(t => t.id == taskId);
+}
+
+function GetLocalStorage() {
+    return JSON.parse(localStorage.getItem("TaskData"));
+}
+
+function SetLocalStorage(data) {
+    localStorage.setItem("TaskData", JSON.stringify(data));
+}
+
+function ClearTooltip() {
+    $("div.tooltip").hide();
+}
+
+function TriggerCustomAlert(title, message) {
+
+    const swalWithDarkButton = Swal.mixin({
+        showConfirmButton: false,
+        imageUrl: '/img/tasks.jpg',
+        imageHeight: 150,
+        closeOnConfirm: false,
+        closeOnCancel: false,
+        allowOutsideClick: false
+        // timer: 1500,
+        // timerProgressBar: true,            
+        // didOpen: () => {
+        //     Swal.showLoading()
+        //     timerInterval = setInterval(() => {
+        //         const content = Swal.getContent()
+        //     }, 100)
+        // },
+        // willClose: () => {
+        //     clearInterval(timerInterval)
+        // }
+    });
+
+    swalWithDarkButton.fire({
+        title: `<span class="cool-text">${title}</span>`,
+        html: `<span class="font-weight-bold">${message}</span>`
+    });
+}
+
+function PopEditModal(element) {
+    let tasks = GetLocalStorage();
+    let taskId = GetTaskId(element);
+    let task = tasks.find(t => t.id == taskId);
+
+    $("#TaskId").val(task.id);
+    //document.getElementById("TaskId").value = task.id
+
+    $("#NewTitle").val(task.title);
+
+    //Sweet works!
+    let modalDueDate = BuildModalDueDate(task.dueDate);
+    $("#NewDueDate").val(modalDueDate);
+    $("#editTaskItem").modal("show");
+
+    alert("Let's see");
+
+}
+
+function ClearTasks() {
+    SetLocalStorage(new Array());
+    ListTasks();
+}
+
+function BuildModalDueDate(dueDate) {
+    let shortDate = dueDate.split("T")[0];
+    return shortDate;
+}
+
+function SetTaskCountLabel(message) {
+    $("#taskCount").text(message);
+}
+
+function SearchTasks(searchString) {
+    searchString = searchString.toLowerCase();
+    let allTasks = GetLocalStorage();
+    let tasks = allTasks.filter(t => t.title.toLowerCase().includes(searchString));
+    SetTaskCountLabel(`TASKS FOUND (${tasks.length})`);
+    ListTasks(tasks);
+}
+                                                </code>
+                                            </pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </section>
+        <!-- End About Section -->
+
+    </main>
+    <!-- END MAIN SECTION -->
+
+<!-- ======= Footer ======= -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="copyright-box">
+                        <p class="copyright">&copy; Copyright <strong>Shawna Russell</strong>. All Rights Reserved</p>
+                        <div class="credits">
+                            <!--
+              All the links in the footer should remain intact.
+              You can delete the links only if you purchased the pro version.
+              Licensing information: //bootstrapmade.com/license/
+              Purchase the pro version with working PHP/AJAX contact form: //bootstrapmade.com/buy/?theme=DevFolio
+            -->
+                            Designed by <a href="https://bootstrapmade.com/" target="blank">BootstrapMade Customized by
+                                Shawna Russell</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End  Footer -->
+
+    <!--Return to Top-->
+    <a href="#" class="back-to-top"><i class="fa fa-chevron-up"></i></a>
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/jquery.easing.min.js"></script>
+    <script src="/js/jquery.waypoints.min.js"></script>
+    <script src="/js/jquery.counterup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/typed.min.js"></script>
+    <script src="/js/venobox.min.js"></script>
+    <script src="/js/script.js"></script>
+
+    <!-- Template Main JS File -->
+    <script src="/js/main.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+    <script type="text/javascript">
+        emailjs.init('user_0fkULf6pFYULOJbXdbwVw')
+    </script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="/js/email.js"></script>
+    <script src="/js/site.js"></script>
+    <script src="/js/prism.js"></script>
+
+    <!--Stock images courtesy of Unsplash.com-->
+
+</body>
+
+</html>

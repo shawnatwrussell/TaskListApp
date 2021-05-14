@@ -355,6 +355,34 @@ a:hover {
   }
 }
 
+/*------/ Scroll Down button /------*/
+.scroll-down {
+  /*background: #0078ff;*/
+  color: #f6f6f6;
+  width: 44px;
+  height: 44px;
+  text-align: center;
+  line-height: 1;
+  font-size: 25px;
+  border-radius: 50%;
+  right: 15px;
+  bottom: 15px;
+  transition: background 0.5s;
+  z-index: 11;
+}
+
+.back-to-top i {
+  padding-top: 12px;
+  color: #d6f7fd;
+}
+
+@media (max-width: 768px) {
+  .back-to-top {
+    bottom: 15px;
+  }
+}
+
+
 /*------/ Prelaoder /------*/
 #preloader {
   position: fixed;
